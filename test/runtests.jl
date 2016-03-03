@@ -12,4 +12,4 @@ r2 = getRoute(ydl,"news/761546/")
 @test r2.variables == ["article_id"]
 
 @test getRouteWithController(ydl,"nothingHere") == ""
-@test getRoute(ydl,"arandomurl" == ""
+@test getRoute(ydl,"arandomurl") == ""
