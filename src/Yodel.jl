@@ -35,7 +35,7 @@ function getRoute(ydl::YodelEngine,url::ASCIIString)
       return route
     end
   end
-  # TODO add here a 404 routing
+  return ""
 end
 
 # Get a route with a given controller
@@ -45,6 +45,7 @@ function getRouteWithController(ydl::YodelEngine,controller::ASCIIString)
       return route
     end
   end
+  return ""
 end
 
 # Extract variable from the url of a given route
