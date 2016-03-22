@@ -8,7 +8,7 @@ r = getRouteWithController(ydl,"Home")
 @test r.variables == []
 
 r2 = getRoute(ydl,"news/761546/")
-@test r2.controller == "news"
+@test r2.controller == "News"
 @test r2.variables == ["article_id"]
 
 @test getRouteWithController(ydl,"nothingHere") == ""

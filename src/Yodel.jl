@@ -1,6 +1,6 @@
 module Yodel
 
-# using LightXML # LightXML is required to parse the XML file
+using LightXML # LightXML is required to parse the XML file
 
 export YodelEngine,Route,getRoute,getRouteWithController
 
@@ -9,10 +9,21 @@ type YodelEngine
 
   # The YodelEngine constructor parses the XML file
   function YodelEngine(xmlPath::ASCIIString)
-    # Temporary routes
-    route1 = Route("home",[],"Home")
-    route2 = Route("news\/[a-zA-Z0-9 ]+\/",["article_id"],"news")
-    routes = [route1,route2]
+    doc = parse_file(xmlPath)
+    xroot = root(doc)
+    routes = []
+    xRoutes = get_elements_by_tagname(xroot,"route")
+    for xRoute in xRoutes
+      if typeof(attribute(xRoute,"variables")) == Void
+        variables = []
+      else
+        variables = separateAttributes(attribute(xRoute,"variables"))
+      end
+
+      tempRoute = Route(attribute(xRoute,"url"),variables,attribute(xRoute,"controller"))
+
+      push!(routes,tempRoute)
+    end
 
     new(routes)
   end
@@ -26,6 +37,26 @@ type Route
   function Route(url::ASCIIString,variables::Array,controller::ASCIIString)
     new(url,variables,controller)
   end
+end
+
+function separateAttributes(attributesString) # Parses the variable attribute of the Route XML element to an array
+  attributesString = string(attributesString)
+  attributes = []
+
+  if length(attributesString) == 0
+    return attributes
+  end
+
+  attributesMatches = eachmatch(r",",attributesString)
+  lastIndex = 0
+
+  for att in attributesMatches
+    push!(attributes,attributesString[lastIndex+1:att.offset])
+    lastIndex = att.offset
+  end
+
+  push!(attributes,attributesString[lastIndex+1:end])
+  return attributes
 end
 
 # Get a route that matches URL

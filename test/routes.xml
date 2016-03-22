@@ -1,4 +1,4 @@
 <routes>
-  <route url="home" controller="home" />
-  <route url="news\/[a-zA-Z0-9]+\/" controller="news" variables="article_id" />
+  <route url="home" controller="Home" />
+  <route url="news\/[a-zA-Z0-9]+\/" controller="News" variables="article_id" />
 </routes>
