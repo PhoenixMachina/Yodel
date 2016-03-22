@@ -42,11 +42,7 @@ end
 function separateAttributes(attributesString) # Parses the variable attribute of the Route XML element to an array
   attributesString = string(attributesString)
   attributes = []
-
-  if length(attributesString) == 0
-    return attributes
-  end
-
+  
   attributesMatches = eachmatch(r",",attributesString)
   lastIndex = 0
 
