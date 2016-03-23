@@ -11,5 +11,7 @@ r2 = getRoute(ydl,"news/761546/")
 @test r2.controller == "News"
 @test r2.variables == ["article_id"]
 
-@test getRouteWithController(ydl,"nothingHere") == ""
-@test getRoute(ydl,"arandomurl") == ""
+@test isRouteWithController(ydl,"nothingHere") == false
+@test isRoute(ydl,"arandomurl") == false
+
+@test getRouteWithController(ydl,"whatever").controller == "Default"
