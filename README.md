@@ -32,7 +32,7 @@ using Yodel
 You first need to instanciate a YodelEngine "super" object which will define which xml file you'll be using. It has only one parameter, the absolute path to your xml file, which we usually call routes.xml .
 
 ```
-ydl = Yodel("path/to/your/routes.xml"))
+ydl = YodelEngine("path/to/your/routes.xml"))
 ```
 
 Well, now you actually need to write that file. Just look at the example we gave you above : each <route /> represents a route, which has a url (a regular expression), a controller, and optionally a variables argument. You can have multiple variables by doing something like :
@@ -45,12 +45,16 @@ Note that you need to put the variables in the same order as they appear on your
 
 You now have multiple functions to get a specific route or variable from a URL :
 ```
+isRoute(ydl::YodelEngine,url::ASCIIString)
+isRouteWithController(ydl::YodelEngine,controller::ASCIIString)
 getRoute(ydl::YodelEngine,url::ASCIIString)
 getRouteWithController(ydl::YodelEngine,controller::ASCIIString)
 getVariable(url::ASCIIString,route::Route,variable::ASCIIString)
 ```
 
-The first two functions return a Route object or an empty string if nothing was found, which has a url::ASCIIString, a controller::ASCIIString and an array called variables.
+The first two functions return true or false depending on whether a route with a specific URL exists or not.
+
+getRoute and getRouteWithController return a Route object which has a url::ASCIIString, a controller::ASCIIString and an array called variables.
 
 ### Implementation
 That might seem a little abstract to you how to actually use it to run a julia web project, so check out PhoenixMachina's website implementation for more informations.
