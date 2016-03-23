@@ -2,7 +2,7 @@ module Yodel
 
 using LightXML # LightXML is required to parse the XML file
 
-export YodelEngine,Route,getRoute,getRouteWithController
+export YodelEngine,Route,getRoute,getRouteWithController,isRoute,isRouteWithController
 
 type YodelEngine
   routes::Array # Routes of Yodel Object
@@ -42,7 +42,7 @@ end
 function separateAttributes(attributesString) # Parses the variable attribute of the Route XML element to an array
   attributesString = string(attributesString)
   attributes = []
-  
+
   attributesMatches = eachmatch(r",",attributesString)
   lastIndex = 0
 
@@ -55,6 +55,16 @@ function separateAttributes(attributesString) # Parses the variable attribute of
   return attributes
 end
 
+# Returns whether a function has a route for a specific URL or not
+function isRoute(ydl::YodelEngine,url::ASCIIString)
+  for route in ydl.routes
+    if ismatch(Regex(route.url),url)
+      return true
+    end
+  end
+  return false
+end
+
 # Get a route that matches URL
 function getRoute(ydl::YodelEngine,url::ASCIIString)
   for route in ydl.routes
@@ -62,9 +72,18 @@ function getRoute(ydl::YodelEngine,url::ASCIIString)
       return route
     end
   end
-  return ""
+  return Route("/",[],"Default")
 end
 
+# Get a route with a given controller
+function isRouteWithController(ydl::YodelEngine,controller::ASCIIString)
+  for route in ydl.routes
+    if controller == route.controller
+      return true
+    end
+  end
+  return false
+end
 # Get a route with a given controller
 function getRouteWithController(ydl::YodelEngine,controller::ASCIIString)
   for route in ydl.routes
@@ -72,12 +91,13 @@ function getRouteWithController(ydl::YodelEngine,controller::ASCIIString)
       return route
     end
   end
-  return ""
+  return Route("/",[],"Default")
 end
 
 # Extract variable from the url of a given route
 function getVariable(url::ASCIIString,route::Route,variable::ASCIIString)
   #TODO
 end
+
 
 end # end of Yodel Module
